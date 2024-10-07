@@ -1,38 +1,17 @@
 import { useState, useEffect } from 'react';
 import { FlatList, View, StyleSheet, Text } from 'react-native';
-import { getFirestore, collection, getDocs, addDoc, query } from 'firebase/firestore/lite';
-import { Button, Icon } from 'react-native-elements';
-import Modal from 'react-native-modal';
-import { firebaseInitialize } from '../firebaseconfig';
+import { fetchTransactions } from './FetchTransactions';
 
 import TransactionItem from './TransactionItem';
-
-const db = getFirestore(firebaseInitialize);
-
-const transactionsCollection = collection(db, 'transactions');
 
 export default function Transactions() {
   const [transactions, setTransactions] = useState([]); // State to store fetched transactions
 
   useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        // Create a query to order transactions by date (descending)
-        const q = query(transactionsCollection);
-        const querySnapshot = await getDocs(q);
-
-        const fetchedTransactions = querySnapshot.docs.map(doc => ({
-          id: doc.id, // Add ID for easier management
-          ...doc.data(),
-        }));
-
-        setTransactions(fetchedTransactions);
-      } catch (error) {
-        console.error('Error fetching transactions:', error);
-      }
+    const fetchData = async () => {
+      setTransactions(await fetchTransactions());
     };
-
-    fetchTransactions(); // Call the function on component mount
+    fetchData();
   }, []);
 
   return (

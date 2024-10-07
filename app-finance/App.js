@@ -14,6 +14,7 @@ export default function App() {
       </View> 
       
       <Transactions />
+      
       <AddTransactionButton />
     </View>
   );

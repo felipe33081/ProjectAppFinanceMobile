@@ -6,6 +6,8 @@ import { getFirestore, collection, getDocs, addDoc, query } from 'firebase/fires
 import { firebaseInitialize } from '../firebaseconfig';
 import SelectDropdown from 'react-native-select-dropdown'
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Transactions from './Transactions';
+import { fetchTransactions } from './FetchTransactions';
 
 const db = getFirestore(firebaseInitialize);
 
@@ -58,11 +60,12 @@ export const AddTransactionButton = () => {
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <View >
             <Modal isVisible={isModalVisible}>
                 <View style={{ padding: 20 }}>
                     <TextInput
                         label="Título"
+                        style={styles.dropdownButtonStyle}
                         value={newTransaction.title}
                         onChangeText={(text) => handleChange('title', text)}
                     />
@@ -72,7 +75,7 @@ export const AddTransactionButton = () => {
                         onSelect={(selectedItem, index) => {
                             console.log(selectedItem, index);
                             handleChange('inputType', selectedItem.title); // Passa o título selecionado
-                          }}
+                        }}
                         renderButton={(selectedItem, isOpened) => {
                             return (
                                 <View style={styles.dropdownButtonStyle}>
@@ -99,17 +102,20 @@ export const AddTransactionButton = () => {
                     />
                     <TextInput
                         label="Data"
+                        style={styles.dropdownButtonStyle}
                         value={newTransaction.date}
                         onChangeText={(text) => handleChange('date', text)}
                     />
                     <TextInput
                         label="Valor"
+                        style={styles.dropdownButtonStyle}
                         value={newTransaction.amount}
                         onChangeText={(number) => handleChange('amount', number)}
                         keyboardType="numeric"
                     />
                 </View>
                 <Button title="Adicionar" onPress={handleAddTransaction} />
+                <Button title="Fechar" onPress={() => setModalVisible(false)} />
             </Modal>
             <Button
                 icon={<Icon name="add" size={30} color="white" />}
@@ -122,49 +128,55 @@ export const AddTransactionButton = () => {
 };
 
 const styles = StyleSheet.create({
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+    },
     dropdownButtonStyle: {
-      width: 200,
-      height: 50,
-      backgroundColor: '#E9ECEF',
-      borderRadius: 12,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingHorizontal: 12,
+        width: 200,
+        height: 50,
+        backgroundColor: '#E9ECEF',
+        borderRadius: 12,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 12,
     },
     dropdownButtonTxtStyle: {
-      flex: 1,
-      fontSize: 18,
-      fontWeight: '500',
-      color: '#151E26',
+        flex: 1,
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#151E26',
     },
     dropdownButtonArrowStyle: {
-      fontSize: 28,
+        fontSize: 28,
     },
     dropdownButtonIconStyle: {
-      fontSize: 28,
-      marginRight: 8,
+        fontSize: 28,
+        marginRight: 8,
     },
     dropdownMenuStyle: {
-      backgroundColor: '#E9ECEF',
-      borderRadius: 8,
+        backgroundColor: '#E9ECEF',
+        borderRadius: 8,
     },
     dropdownItemStyle: {
-      width: '100%',
-      flexDirection: 'row',
-      paddingHorizontal: 12,
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingVertical: 8,
+        width: '100%',
+        flexDirection: 'row',
+        paddingHorizontal: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 8,
     },
     dropdownItemTxtStyle: {
-      flex: 1,
-      fontSize: 18,
-      fontWeight: '500',
-      color: '#151E26',
+        flex: 1,
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#151E26',
     },
     dropdownItemIconStyle: {
-      fontSize: 28,
-      marginRight: 8,
+        fontSize: 28,
+        marginRight: 8,
     },
-  });
+});
