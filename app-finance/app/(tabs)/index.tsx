@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import AddCardButton from '@/components/AddCardButton';
 import BalanceCard from '@/components/BalanceCard';
 import CardItems from '@/components/CardItems';
@@ -18,6 +18,11 @@ export default function HomeScreen() {
   return (
     <View>
       <View>
+      <StatusBar
+        animated={true}
+        backgroundColor="#ebebeb"
+        hidden={false}
+      />
         <BalanceCard title="Outubro" subtitle="Saldo em Conta">
           <Text style={styles.balanceText}>R$370,00</Text>
 

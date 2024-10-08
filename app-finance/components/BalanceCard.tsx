@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, Switch, ViewStyle } from 'react-native';
 import { getFirestore, collection, getDocs, addDoc, query } from 'firebase/firestore/lite';
 import { firebaseInitialize } from '../firebaseconfig';
 import { useFonts } from 'expo-font';
@@ -17,6 +17,10 @@ interface CardProps {
 
 const BalanceCard: React.FC<CardProps> = ({ title, subtitle, children, style }) => {
   const [transactions, setTransactions] = useState<any[]>([]); // Estado para armazenar as transações
+
+  useFonts({
+    Kanit: require('../assets/fonts/Kanit-Light.ttf'),
+  });
 
   useEffect(() => {
     async function FetchTransactions() {
@@ -85,7 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center', // Centraliza verticalmente
     alignItems: 'center',
-  },
+  }
 });
 
 export default BalanceCard;
