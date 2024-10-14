@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Switch, ViewStyle } from 'react-native';
 import { getFirestore, collection, getDocs, addDoc, query } from 'firebase/firestore/lite';
 import { firebaseInitialize } from '../firebaseconfig';
 import { useFonts } from 'expo-font';
+import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 const db = getFirestore(firebaseInitialize);
 
@@ -17,6 +18,7 @@ interface CardProps {
 
 const BalanceCard: React.FC<CardProps> = ({ title, subtitle, children, style }) => {
   const [transactions, setTransactions] = useState<any[]>([]); // Estado para armazenar as transações
+  const { backgroundCardsColor, textsColor, generalBackgroundColor } = useDynamicColors();
 
   useFonts({
     Kanit: require('../assets/fonts/Kanit-Light.ttf'),
@@ -47,9 +49,9 @@ const BalanceCard: React.FC<CardProps> = ({ title, subtitle, children, style }) 
   console.log(transactions);
 
   return (
-    <View style={[styles.card, style]}>
-      {title && <Text style={styles.title}>{title}</Text>}
-      {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+    <View style={[styles.card, style, { backgroundColor: backgroundCardsColor }]}>
+      {title && <Text style={[styles.title, { color: textsColor }]}>{title}</Text>}
+      {subtitle && <Text style={[styles.subtitle, { color: textsColor }]}>{subtitle}</Text>}
       <View style={styles.content}>{children}</View>
     </View>
   );
@@ -57,19 +59,19 @@ const BalanceCard: React.FC<CardProps> = ({ title, subtitle, children, style }) 
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#ebebeb', // Lighter background color
+    //backgroundColor: backgroundCardsColor, // Lighter background color
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    paddingVertical: 40,
+    paddingVertical: 18,
     paddingBottom: 20,
     shadowColor: '#000',
     shadowOffset: {
-      width: 1,
-      height: 4,
+      width: 0,
+      height: 1,
     },
-    shadowOpacity: 0.4,
-    shadowRadius: 5,
-    elevation: 5,
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 5
   },
   title: {
     fontSize: 20,
@@ -77,6 +79,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold', // Uncomment if you want bold font
     marginBottom: 10,
     textAlign: 'center',
+    color: '#e4e5e8'
   },
   subtitle: {
     fontSize: 16,

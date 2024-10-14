@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 interface CardProps {
   title?: string;
@@ -8,11 +9,13 @@ interface CardProps {
   style?: ViewStyle;
 }
 
-const CardItems: React.FC<CardProps> = ({ title, subtitle, children, style }) => {
+const DespesasCard: React.FC<CardProps> = ({ children, style }) => {
+  const { textsColor, backgroundCardsColor, generalBackgroundColor } = useDynamicColors();
+
   return (
-    <View style={[styles.card, style]}>
-      {title && <Text style={styles.title}>{title}</Text>}
-      {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+    <View style={[styles.card, style, { backgroundColor: backgroundCardsColor }]}>
+      {/* {title && <Text style={[styles.title, { color: textsColor }]}>{title}</Text>}
+      {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>} */}
       <View style={styles.content}>{children}</View>
     </View>
   );
@@ -20,25 +23,25 @@ const CardItems: React.FC<CardProps> = ({ title, subtitle, children, style }) =>
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#f0f0f0', // Lighter background color
+    //backgroundColor: Colors.CardsbackgroundColor, // Lighter background color
     borderRadius: 20,
-    padding: 40,
-    paddingBottom: 50,
+    padding: 0,
     margin: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 5
   },
   title: {
     fontSize: 20,
     // fontWeight: 'bold', // Uncomment if you want bold font
-    marginBottom: 10,
+    marginTop: 0,
     textAlign: 'center',
+    fontFamily: 'Kanit'
   },
   subtitle: {
     fontSize: 16,
@@ -48,10 +51,10 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    margin: 30,
+    margin: 15,
     justifyContent: 'center', // Centraliza verticalmente
     alignItems: 'center',
   },
 });
 
-export default CardItems;
+export default DespesasCard;

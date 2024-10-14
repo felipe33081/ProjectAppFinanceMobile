@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 interface ButtonProps {
   title: string;
-  onPress: () => void;
 }
 
-const AddCardButton: React.FC<ButtonProps> = ({ title,
-  onPress }) => {
+const AddCardButton: React.FC<ButtonProps> = ({ title }) => {
+  const { buttonsColors } = useDynamicColors();
+
+  function Handle () {
+    console.log('Teste do botão de adicionar Conta');
+  }
+
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={[styles.button, {backgroundColor: buttonsColors}]} onPress={Handle}>
       <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
   );
@@ -17,10 +22,9 @@ const AddCardButton: React.FC<ButtonProps> = ({ title,
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#4299E1', // Azul claro
     borderRadius: 20,
-    padding: 15,
-    width:300
+    padding: 10,
+    width: 300
   },
   buttonContent: {
     flexDirection: 'row',
@@ -28,9 +32,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontWeight: 'bold',
-    marginRight: 10,
+    //fontWeight: 'bold',
+    margin: 0,
     textAlign: 'center',
+    fontSize: 19,
+    fontFamily: 'Kanit'
   },
 });
 
