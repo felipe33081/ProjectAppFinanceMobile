@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { Pressable, Text, StyleSheet } from 'react-native';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 interface ButtonProps {
   title: string;
 }
 
-const AddCardButton: React.FC<ButtonProps> = ({ title }) => {
+const AddNewAccountButton: React.FC<ButtonProps> = ({ title }) => {
   const { buttonsColors } = useDynamicColors();
 
   function Handle () {
@@ -14,17 +14,21 @@ const AddCardButton: React.FC<ButtonProps> = ({ title }) => {
   }
 
   return (
-    <TouchableOpacity style={[styles.button, {backgroundColor: buttonsColors}]} onPress={Handle}>
+    <Pressable style={[styles.button, {backgroundColor: buttonsColors}]} onPress={Handle}>
       <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
-    padding: 10,
-    width: 300
+    marginTop: 25,
+    margin: 20,
+    width: 300,
+    height: 45,
+    alignItems: "center",
+    paddingVertical: 6
   },
   buttonContent: {
     flexDirection: 'row',
@@ -33,11 +37,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     //fontWeight: 'bold',
-    margin: 0,
-    textAlign: 'center',
     fontSize: 19,
-    fontFamily: 'Kanit'
+    fontFamily: 'Kanit',
   },
 });
 
-export default AddCardButton;
+export default AddNewAccountButton;

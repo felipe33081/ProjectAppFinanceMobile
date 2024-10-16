@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, Platform } from 'react-native';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
+import AddNewAccountButton from '../AddNewAccountButton';
 
 interface CardProps {
   title?: string;
   subtitle?: string;
-  children: React.ReactNode;
   style?: ViewStyle;
 }
 
-const DetailsCard: React.FC<CardProps> = ({ title, subtitle, children, style }) => {
+const DetailsCard: React.FC<CardProps> = ({ title, subtitle, style }) => {
   const { textsColor, backgroundCardsColor, generalBackgroundColor } = useDynamicColors();
 
   return (
@@ -19,7 +19,11 @@ const DetailsCard: React.FC<CardProps> = ({ title, subtitle, children, style }) 
 
       {subtitle && <Text style={[styles.subtitle, { color: textsColor }]}>{subtitle}</Text>}
       <Text style={[styles.text, { color: '#f74236' }]}>Categoria: Alimentação - Valor: R$ 253,00</Text>
-      <View style={styles.content}>{children}</View>
+
+      <View style={styles.button}>
+        <AddNewAccountButton title="Adicionar nova conta" />
+      </View>
+
     </View>
   );
 };
@@ -28,16 +32,15 @@ const styles = StyleSheet.create({
   card: {
     //backgroundColor: Colors.CardsbackgroundColor, // Lighter background color
     borderRadius: 20,
-    padding: 0,
+    padding: 10,
     margin: 10,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 1
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 5
   },
   title: {
     fontSize: 20,
@@ -58,12 +61,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Kanit'
   },
-  content: {
-    flex: 1,
-    margin: 18,
-    justifyContent: 'center', // Centraliza verticalmente
+  button:{
     alignItems: 'center',
-  },
+  }
 });
 
 export default DetailsCard;

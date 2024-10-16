@@ -5,7 +5,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { View, Switch, StyleSheet } from 'react-native';
 import 'react-native-reanimated';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { useGeneralTheme } from '@/theme/GeneralTheme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -13,7 +12,6 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const theme = useGeneralTheme();
-
 
   const [loaded] = useFonts({
     Kanit: require('../assets/fonts/Kanit-Light.ttf'),

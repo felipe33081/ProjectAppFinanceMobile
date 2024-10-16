@@ -1,22 +1,20 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, Platform  } from 'react-native';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 interface CardProps {
   title?: string;
   subtitle?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   style?: ViewStyle;
 }
 
-const DespesasCard: React.FC<CardProps> = ({ children, style }) => {
+const DespesasCard: React.FC<CardProps> = ({ style }) => {
   const { textsColor, backgroundCardsColor, generalBackgroundColor } = useDynamicColors();
 
   return (
     <View style={[styles.card, style, { backgroundColor: backgroundCardsColor }]}>
-      {/* {title && <Text style={[styles.title, { color: textsColor }]}>{title}</Text>}
-      {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>} */}
-      <View style={styles.content}>{children}</View>
+      <Text style={[styles.depesasCardText, { color: textsColor }]}>Graficos vem aqui com categorias</Text>
     </View>
   );
 };
@@ -25,16 +23,15 @@ const styles = StyleSheet.create({
   card: {
     //backgroundColor: Colors.CardsbackgroundColor, // Lighter background color
     borderRadius: 20,
-    padding: 0,
+    padding: 10,
     margin: 10,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
+    shadowOffset: { 
+      width: 0, 
+      height: 1 
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 5
   },
   title: {
     fontSize: 20,
@@ -54,6 +51,12 @@ const styles = StyleSheet.create({
     margin: 15,
     justifyContent: 'center', // Centraliza verticalmente
     alignItems: 'center',
+  },
+  depesasCardText: {
+    fontFamily: 'Kanit',
+    fontWeight: '400',
+    fontSize: 18,
+    textAlign: "center"
   },
 });
 
