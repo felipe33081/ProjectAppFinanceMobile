@@ -3,19 +3,29 @@ import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeScreen from '.';
+import TransactionsScreen from './contas';
+import { useDynamicColors } from '@/hooks/useDynamicColors';
+
+const Tab = createBottomTabNavigator();
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { barTabs, activeBarTab } = useDynamicColors();
+
   return (
-    <Tabs
+    <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarActiveBackgroundColor: Colors[colorScheme ?? 'light'].background
+        tabBarActiveTintColor: activeBarTab,
+        tabBarInactiveTintColor: 'gray',
+        tabBarStyle: { 
+          backgroundColor: barTabs 
+        },
+        headerShown: false
       }}>
-      <Tabs.Screen
-        name="index"
+      <Tab.Screen
+        name="Principal"
+        component={HomeScreen}
         options={{
           title: 'Principal',
           tabBarIcon: ({ color, focused }) => (
@@ -23,8 +33,9 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="TransactionsScreen"
+      <Tab.Screen
+        name="Contas"
+        component={TransactionsScreen}
         options={{
           title: 'Contas',
           tabBarIcon: ({ color, focused }) => (
@@ -32,6 +43,6 @@ export default function TabLayout() {
           ),
         }}
       />
-    </Tabs>
+    </Tab.Navigator>
   );
 }
