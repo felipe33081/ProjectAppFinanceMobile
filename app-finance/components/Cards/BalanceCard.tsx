@@ -10,67 +10,69 @@ interface CardProps {
   style?: ViewStyle;
 }
 
-const BalanceCard: React.FC<CardProps> = ({ children, style }) => {
+const BalanceCard: React.FC<CardProps> = () => {
   const { backgroundCardsColor, textsColor, barNotificationColor } = useDynamicColors();
-  const [ eyeVisible, setEyeVisible] = useState(true);
+  const [eyeVisible, setEyeVisible] = useState(true);
 
   useFonts({
     Kanit: require('../../assets/fonts/Kanit-Light.ttf'),
   });
 
   async function HandleEyeVisible() {
-    if (eyeVisible == true){
+    if (eyeVisible == true) {
       setEyeVisible(false);
     }
-    if (eyeVisible == false){
+    if (eyeVisible == false) {
       setEyeVisible(true);
     }
   };
 
   return (
-    <View style={[styles.card, style, { backgroundColor: backgroundCardsColor }]}>
+    <View >
       <StatusBar
-        animated={true}
+        animated={false}
         backgroundColor={barNotificationColor}
         hidden={false}
       />
-      <Text style={[styles.title, { color: textsColor }]}>Outubro</Text>
-      <Text style={[styles.subtitle, { color: '#8f8d98' }]}>Saldo em Conta</Text>
-      <View style={styles.content}>{children}</View>
+      <View style={[styles.card, { backgroundColor: backgroundCardsColor }]}>
 
-      {eyeVisible == true && <Text style={[styles.balanceText, { color: textsColor }]}>R$3.700,00</Text>}
-      {eyeVisible == false && <Text style={[styles.balanceText, { color: textsColor }]}>*******</Text>}
+        <Text style={[styles.title, { color: textsColor }]}>Outubro</Text>
+        <Text style={[styles.subtitle, { color: '#8f8d98' }]}>Saldo em Conta</Text>
 
-      <View >
-        <Pressable style={[styles.button]} onPress={HandleEyeVisible}>
-          {eyeVisible == true && <MaterialCommunityIcons name="eye-outline" size={22} color="#8f8d98" />}
-          {eyeVisible == false && <MaterialCommunityIcons name="eye-off-outline" size={22} color="#8f8d98" />}
-        </Pressable>
-      </View>
+        {eyeVisible == true && <Text style={[styles.balanceText, { color: textsColor }]}>R$3.700,00</Text>}
+        {eyeVisible == false && <Text style={[styles.balanceText, { color: textsColor }]}>*******</Text>}
 
-      {/* View  */}
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 25 }}>
-        {/* Seção de Receitas */}
-        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
-          <AntDesign name="upcircle" size={38} color="#4eb251" />
-          <View style={{ marginLeft: 10 }}>
-            <Text style={[styles.kanitMedium, { color: '#8f8d98' }]}>Receitas</Text>
-            {eyeVisible == true  && <Text style={{ color: '#4eb251', fontSize: 18, fontFamily: 'Kanit' }}>R$ 1.000,00</Text>}
-            {eyeVisible == false  && <Text style={{ color: '#4eb251', fontSize: 18, fontFamily: 'Kanit' }}>*******</Text>}
+        <View >
+          <Pressable style={[styles.button]} onPress={HandleEyeVisible}>
+            {eyeVisible == true && <MaterialCommunityIcons name="eye-outline" size={22} color="#8f8d98" />}
+            {eyeVisible == false && <MaterialCommunityIcons name="eye-off-outline" size={22} color="#8f8d98" />}
+          </Pressable>
+        </View>
+
+        {/* View  */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 25 }}>
+          {/* Seção de Receitas */}
+          <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
+            <AntDesign name="upcircle" size={38} color="#4eb251" />
+            <View style={{ marginLeft: 10 }}>
+              <Text style={[styles.kanitMedium, { color: '#8f8d98' }]}>Receitas</Text>
+              {eyeVisible == true && <Text style={{ color: '#4eb251', fontSize: 18, fontFamily: 'Kanit' }}>R$ 1.000,00</Text>}
+              {eyeVisible == false && <Text style={{ color: '#4eb251', fontSize: 18, fontFamily: 'Kanit' }}>*******</Text>}
+            </View>
+          </View>
+
+          {/* Seção de Despesas */}
+          <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent: 'flex-start', width: 220, paddingLeft: 30 }}>
+            <AntDesign name="downcircle" size={38} color="#f74236" />
+            <View style={{ marginLeft: 10 }}>
+              <Text style={[styles.kanitMedium, { color: '#8f8d98' }]}>Despesas</Text>
+              {eyeVisible == true && <Text style={{ color: '#f74236', fontSize: 18, fontFamily: 'Kanit' }}>R$ 7.500,00</Text>}
+              {eyeVisible == false && <Text style={{ color: '#f74236', fontSize: 18, fontFamily: 'Kanit' }}>*******</Text>}
+            </View>
           </View>
         </View>
 
-        {/* Seção de Despesas */}
-        <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center', justifyContent: 'flex-start', width: 220, paddingLeft: 30 }}>
-          <AntDesign name="downcircle" size={38} color="#f74236" />
-          <View style={{ marginLeft: 10 }}>
-            <Text style={[styles.kanitMedium, { color: '#8f8d98' }]}>Despesas</Text>
-            {eyeVisible == true  && <Text style={{ color: '#f74236', fontSize: 18, fontFamily: 'Kanit' }}>R$ 7.500,00</Text>}
-            {eyeVisible == false  && <Text style={{ color: '#f74236', fontSize: 18, fontFamily: 'Kanit' }}>*******</Text>}
-          </View>
-        </View>
       </View>
-
     </View>
   );
 };
@@ -83,14 +85,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingBottom: 25,
     marginBottom: 25,
-    marginTop: -83,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
   },
   title: {
     fontSize: 20,

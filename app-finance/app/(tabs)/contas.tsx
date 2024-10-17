@@ -2,7 +2,7 @@ import { StyleSheet, ImageBackground, Text, View } from 'react-native';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 export default function TransactionsScreen() {
-    const image = require('../../assets/images/1000_F_916875522_4MAi6kU4XNpdmCHLqX2R66btNzflaqgV (1).jpg');
+    const image = require('../../assets/images/yu13.jpg');
     const { textsColor } = useDynamicColors();
 
     return (

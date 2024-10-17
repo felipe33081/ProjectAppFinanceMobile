@@ -1,9 +1,8 @@
 import { Theme } from "@react-navigation/native";
-import { Colors } from "@/constants/Colors";
 import { useDynamicColors } from "@/hooks/useDynamicColors";
 
 export function useGeneralTheme(): Theme {
-  const { backgroundCardsColor, generalBackgroundColor } = useDynamicColors();
+  const { generalBackgroundColor } = useDynamicColors();
 
   return {
     dark: true, // ou use uma lógica dinâmica para detectar se é dark ou light

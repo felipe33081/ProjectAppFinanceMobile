@@ -6,6 +6,7 @@ export function useDynamicColors() {
     let backgroundCardsColor = '';
     let generalBackgroundColor = '';
     let textsColor = '';
+    let textTitleCards = '';
     let barNotificationColor = '';
     let buttonsColors = '';
     let barTabs = '';
@@ -14,12 +15,13 @@ export function useDynamicColors() {
     // Definir cores com base no esquema de cores
     if (colorScheme === 'dark') {
         generalBackgroundColor = '#18171c';
-        backgroundCardsColor = 'rgba(57, 57, 67, 0.8)';
-        textsColor = '#e4e5e8';
+        backgroundCardsColor = 'rgba(57, 57, 67, 0.9)';
+        textsColor = '#e4e5e8';//#e4e5e8
         barNotificationColor = '#2f2f39';
         buttonsColors = '#8858ce';
         barTabs = '#393943';
         activeBarTab = '#fff';
+        textTitleCards = '#4a4564';
 
     } else if (colorScheme === 'light') {
         generalBackgroundColor = '#ecf3fb';
@@ -29,6 +31,7 @@ export function useDynamicColors() {
         buttonsColors = '#6615de';
         barTabs = '#fff';
         activeBarTab = '#6615de';
+        textTitleCards = '#4a4564';
 
     }
 
@@ -39,6 +42,7 @@ export function useDynamicColors() {
         barNotificationColor,
         buttonsColors,
         barTabs,
-        activeBarTab
+        activeBarTab,
+        textTitleCards
     };
 }

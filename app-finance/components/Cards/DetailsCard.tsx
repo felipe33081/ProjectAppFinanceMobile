@@ -10,7 +10,7 @@ interface CardProps {
 }
 
 const DetailsCard: React.FC<CardProps> = ({ title, subtitle, style }) => {
-  const { textsColor, backgroundCardsColor, generalBackgroundColor } = useDynamicColors();
+  const { textsColor, backgroundCardsColor } = useDynamicColors();
 
   return (
     <View style={[styles.card, style, { backgroundColor: backgroundCardsColor }]}>

@@ -10,7 +10,7 @@ interface CardProps {
 }
 
 const DespesasCard: React.FC<CardProps> = ({ style }) => {
-  const { textsColor, backgroundCardsColor, generalBackgroundColor } = useDynamicColors();
+  const { textsColor, backgroundCardsColor } = useDynamicColors();
 
   return (
     <View style={[styles.card, style, { backgroundColor: backgroundCardsColor }]}>
@@ -25,14 +25,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     margin: 10,
-    marginBottom: 25,
-    shadowColor: '#000',
-    shadowOffset: { 
-      width: 0, 
-      height: 1 
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    marginBottom: 25
   },
   title: {
     fontSize: 20,
