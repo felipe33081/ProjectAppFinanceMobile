@@ -3,9 +3,9 @@ import { useDynamicColors } from "@/hooks/useDynamicColors";
 
 export function useGeneralTheme(): Theme {
   const { generalBackgroundColor } = useDynamicColors();
-
+  
   return {
-    dark: true, // ou use uma lógica dinâmica para detectar se é dark ou light
+    dark: false, // ou use uma lógica dinâmica para detectar se é dark ou light
     colors: {
       primary: 'rgb(10, 132, 255)',
       background: generalBackgroundColor, // usa o valor retornado pelo hook

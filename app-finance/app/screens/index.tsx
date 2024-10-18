@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ImageBackground, RefreshControl, ScrollView, StatusBar } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  Platform
+} from 'react-native';
 import BalanceCard from '@/components/Cards/BalanceCard';
 import DetailsCard from '@/components/Cards/DetailsCard';
 import DespesasCard from '@/components/Cards/DespesasCard';
@@ -30,10 +38,8 @@ export default function HomeScreen() {
   }, [refreshing]);
 
   return (
-    //<ImageBackground source={image} resizeMode="cover" style={styles.image}>
     <View style={{ flex: 1, paddingTop: StatusBar.currentHeight || 0 }}>
       <StatusBar
-        animated={false}
         backgroundColor={barNotificationColor}
         hidden={false}
       />
@@ -55,17 +61,8 @@ export default function HomeScreen() {
           <Text style={[styles.titleCardText, { color: textTitleCards }]}>Detalhamento</Text>
           <DetailsCard title='Maior valor de receita do mês' subtitle='Maior valor de despesa do mês' />
         </View>
-        <View>
-          <Text style={[styles.titleCardText, { color: textTitleCards }]}>Detalhamento</Text>
-          <DetailsCard title='Maior valor de receita do mês' subtitle='Maior valor de despesa do mês' />
-        </View>
-        <View>
-          <Text style={[styles.titleCardText, { color: textTitleCards }]}>Detalhamento</Text>
-          <DetailsCard title='Maior valor de receita do mês' subtitle='Maior valor de despesa do mês' />
-        </View>
       </ScrollView>
     </View>
-    //</ImageBackground>
   );
 };
 

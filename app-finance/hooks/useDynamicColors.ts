@@ -21,7 +21,7 @@ export function useDynamicColors() {
         buttonsColors = '#8858ce';
         barTabs = '#393943';
         activeBarTab = '#fff';
-        textTitleCards = '#4a4564';
+        textTitleCards = '#adb5bd';
 
     } else if (colorScheme === 'light') {
         generalBackgroundColor = '#ecf3fb';
