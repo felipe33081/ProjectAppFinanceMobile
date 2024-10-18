@@ -1,16 +1,18 @@
 import {
     StyleSheet,
-    ImageBackground,
     Text,
     View,
     StatusBar,
-    Platform
+    Switch
 } from 'react-native';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
+import { useState } from 'react';
+import { EventRegister } from 'react-native-event-listeners';
 
 export default function TransactionsScreen() {
-    const image = require('../../assets/images/yu13.jpg');
-    const { textsColor, barNotificationColor } = useDynamicColors();
+    const { textsColor, barNotificationColor, textTitleCards } = useDynamicColors();
+
+    const [darkMode, setDarkMode] = useState(false)
 
     return (
         <View style={{ paddingTop: StatusBar.currentHeight || 0 }}>
@@ -19,8 +21,16 @@ export default function TransactionsScreen() {
                 hidden={false}
             />
             <View style={styles.container}>
-                <Text style={[styles.titleCardText, { color: textsColor, fontSize: 30 }]}>Tela de Contas</Text>
+                <Text style={[styles.titleCardText, { color: textTitleCards, fontSize: 30 }]}>Tela de Contas</Text>
             </View>
+
+            <Switch
+                value={darkMode}
+                onValueChange={(value) => {
+                    setDarkMode(value);
+                    EventRegister.emit('ChangeTheme', value)
+                }}
+            />
         </View>
     );
 }

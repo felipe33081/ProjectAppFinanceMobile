@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   RefreshControl,
   ScrollView,
-  StatusBar,
-  Platform
+  StatusBar
 } from 'react-native';
 import BalanceCard from '@/components/Cards/BalanceCard';
 import DetailsCard from '@/components/Cards/DetailsCard';
@@ -15,25 +14,23 @@ import { useFonts } from 'expo-font';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 export default function HomeScreen() {
-  const { textTitleCards, barNotificationColor } = useDynamicColors();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const { textTitleCards, barNotificationColor } = useDynamicColors()
+  const [refreshing, setRefreshing] = React.useState(false)
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+    setRefreshing(true)
     setTimeout(() => {
-      setRefreshing(false);
+      setRefreshing(false)
     }, 1000);
   }, []);
 
-  const image = require('../../assets/images/yu13.jpg');
-
   useFonts({
-    Kanit: require('../../assets/fonts/Kanit-Light.ttf'),
+    Kanit: require('../../assets/fonts/Kanit-Light.ttf')
   });
 
   useEffect(() => {
     if (refreshing) {
-      console.log('teste refreshing');
+      console.log(refreshing)
     }
   }, [refreshing]);
 
@@ -61,6 +58,7 @@ export default function HomeScreen() {
           <Text style={[styles.titleCardText, { color: textTitleCards }]}>Detalhamento</Text>
           <DetailsCard title='Maior valor de receita do mês' subtitle='Maior valor de despesa do mês' />
         </View>
+
       </ScrollView>
     </View>
   );
