@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, StatusBar } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import themeContext from '@/theme/themeContext';
 
 interface CardProps {
   children?: React.ReactNode;
@@ -13,6 +14,7 @@ interface CardProps {
 const BalanceCard: React.FC<CardProps> = () => {
   const { backgroundCardsColor, textsColor, barNotificationColor } = useDynamicColors();
   const [eyeVisible, setEyeVisible] = useState(true);
+  const theme = useContext(themeContext);
 
   useFonts({
     Kanit: require('../../assets/fonts/Kanit-Light.ttf'),
