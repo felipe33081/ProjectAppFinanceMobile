@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Pressable, ViewStyle, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, StatusBar } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -29,11 +29,6 @@ const BalanceCard: React.FC<CardProps> = () => {
 
   return (
     <View >
-      <StatusBar
-        animated={false}
-        backgroundColor={barNotificationColor}
-        hidden={false}
-      />
       <View style={[styles.card, { backgroundColor: backgroundCardsColor }]}>
 
         <Text style={[styles.title, { color: textsColor }]}>Outubro</Text>
@@ -43,10 +38,10 @@ const BalanceCard: React.FC<CardProps> = () => {
         {eyeVisible == false && <Text style={[styles.balanceText, { color: textsColor }]}>*******</Text>}
 
         <View >
-          <Pressable style={[styles.button]} onPress={HandleEyeVisible}>
+          <TouchableOpacity style={[styles.button]} onPress={HandleEyeVisible}>
             {eyeVisible == true && <MaterialCommunityIcons name="eye-outline" size={22} color="#8f8d98" />}
             {eyeVisible == false && <MaterialCommunityIcons name="eye-off-outline" size={22} color="#8f8d98" />}
-          </Pressable>
+          </TouchableOpacity>
         </View>
 
         {/* View  */}

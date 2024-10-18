@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, Text, StyleSheet } from 'react-native';
+import { Pressable, Text, StyleSheet, Button, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 interface ButtonProps {
@@ -14,9 +14,9 @@ const AddNewAccountButton: React.FC<ButtonProps> = ({ title }) => {
   }
 
   return (
-    <Pressable style={[styles.button, {backgroundColor: buttonsColors}]} onPress={Handle}>
+    <TouchableOpacity style={[styles.button, {backgroundColor: buttonsColors}]} onPress={Handle}>
       <Text style={styles.buttonText}>{title}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

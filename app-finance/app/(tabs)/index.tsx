@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, Switch, StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ImageBackground, RefreshControl, ScrollView, StatusBar } from 'react-native';
 import BalanceCard from '@/components/Cards/BalanceCard';
 import DetailsCard from '@/components/Cards/DetailsCard';
 import DespesasCard from '@/components/Cards/DespesasCard';
@@ -7,7 +7,15 @@ import { useFonts } from 'expo-font';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 export default function HomeScreen() {
-  const { textTitleCards } = useDynamicColors();
+  const { textTitleCards, barNotificationColor } = useDynamicColors();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
 
   const image = require('../../assets/images/yu13.jpg');
 
@@ -15,13 +23,29 @@ export default function HomeScreen() {
     Kanit: require('../../assets/fonts/Kanit-Light.ttf'),
   });
 
-  return (
-    <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-      <View style={{ flex: 1, paddingTop: StatusBar.currentHeight || 0 }}>
-        <View>
-          <BalanceCard />
-        </View>
+  useEffect(() => {
+    if (refreshing) {
+      console.log('teste refreshing');
+    }
+  }, [refreshing]);
 
+  return (
+    //<ImageBackground source={image} resizeMode="cover" style={styles.image}>
+    <View style={{ flex: 1, paddingTop: StatusBar.currentHeight || 0 }}>
+      <StatusBar
+        animated={false}
+        backgroundColor={barNotificationColor}
+        hidden={false}
+      />
+      <View>
+        <BalanceCard />
+      </View>
+
+      <ScrollView
+        decelerationRate='fast'
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View>
           <Text style={[styles.titleCardText, { color: textTitleCards }]}>Depesas por categoria</Text>
           <DespesasCard />
@@ -31,8 +55,17 @@ export default function HomeScreen() {
           <Text style={[styles.titleCardText, { color: textTitleCards }]}>Detalhamento</Text>
           <DetailsCard title='Maior valor de receita do mês' subtitle='Maior valor de despesa do mês' />
         </View>
-      </View>
-    </ImageBackground>
+        <View>
+          <Text style={[styles.titleCardText, { color: textTitleCards }]}>Detalhamento</Text>
+          <DetailsCard title='Maior valor de receita do mês' subtitle='Maior valor de despesa do mês' />
+        </View>
+        <View>
+          <Text style={[styles.titleCardText, { color: textTitleCards }]}>Detalhamento</Text>
+          <DetailsCard title='Maior valor de receita do mês' subtitle='Maior valor de despesa do mês' />
+        </View>
+      </ScrollView>
+    </View>
+    //</ImageBackground>
   );
 };
 

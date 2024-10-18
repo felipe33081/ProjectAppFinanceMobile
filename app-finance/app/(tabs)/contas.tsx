@@ -1,30 +1,35 @@
-import { StyleSheet, ImageBackground, Text, View } from 'react-native';
+import { StyleSheet, ImageBackground, Text, View, StatusBar } from 'react-native';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 export default function TransactionsScreen() {
     const image = require('../../assets/images/yu13.jpg');
-    const { textsColor } = useDynamicColors();
+    const { textsColor, barNotificationColor } = useDynamicColors();
 
     return (
-        <View style={{ flex: 1 }}>
-            <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-                <Text style={{ color: 'white', fontSize: 50 }}>Tela de Contas</Text>
-            </ImageBackground>
+        //<ImageBackground source={image} resizeMode="cover" style={styles.image}>
+        <View style={{ paddingTop: StatusBar.currentHeight || 0 }}>
+            <StatusBar
+                animated={false}
+                backgroundColor={barNotificationColor}
+                hidden={false}
+            />
+            <View style={styles.container}>
+                <Text style={[styles.titleCardText, { color: 'white', fontSize: 30 }]}>Tela de Contas</Text>
+            </View>
+
         </View>
+        //</ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    image: {
-        flex: 1,
-        width: '100%', // ou um valor fixo, se necessário
-        height: '100%',
-        justifyContent: 'center',
+    container: {
+        alignItems: 'center'
     },
     titleCardText: {
+
         fontFamily: 'Kanit',
         fontWeight: '400',
-        fontSize: 22,
-        paddingLeft: 18
-    },
+        fontSize: 25,
+    }
 });
