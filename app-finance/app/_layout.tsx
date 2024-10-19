@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import HomeScreen from './screens/index';
 import TransactionsScreen from './screens/contas';
@@ -13,6 +14,7 @@ import theme from '@/theme/Theme';
 import themeContext from '@/theme/themeContext';
 import DarkTheme from '@/theme/DarkTheme';
 import WhiteTheme from '@/theme/WhiteTheme';
+import SettingsScreen from './screens/Settings';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +31,6 @@ export default function RootLayout() {
   useEffect(() => {
     const listener = EventRegister.addEventListener('ChangeTheme', (data) => {
       setDarkMode(data);
-      console.log(data === true ? 'dark' : 'light')
     });
 
     return () => {
@@ -38,8 +39,6 @@ export default function RootLayout() {
       }
     };
   }, [darkMode]);
-
-  console.log(activeBarTab)
 
   useEffect(() => {
     if (loaded) {
@@ -51,9 +50,25 @@ export default function RootLayout() {
     return null;
   }
 
+  const config = {
+    screens: {
+      HomeScreen: 'index',
+      TransactionsScreen: 'contas',
+      SettingsScreen: 'Settings'
+    },
+  };
+  
+  const linking = {
+    prefixes: ['exp://'],
+    config,
+  };
+
   return (
     <themeContext.Provider value={darkMode === true ? theme.dark : theme.light}>
-      <NavigationContainer independent={true} theme={darkMode === true ? DarkTheme : WhiteTheme}>
+      <NavigationContainer
+        linking={linking}
+        independent={true}
+        theme={darkMode === true ? DarkTheme : WhiteTheme}>
         <Tab.Navigator
           screenOptions={{
             tabBarActiveTintColor: darkMode === true ? DarkTheme.colors.notification : WhiteTheme.colors.notification,
@@ -65,7 +80,6 @@ export default function RootLayout() {
             name="Principal"
             component={HomeScreen}
             options={{
-              title: 'Principal',
               tabBarIcon: ({ color, focused }) => (
                 <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
               ),
@@ -75,9 +89,17 @@ export default function RootLayout() {
             name="Contas"
             component={TransactionsScreen}
             options={{
-              title: 'Contas',
               tabBarIcon: ({ color, focused }) => (
                 <MaterialIcons name={focused ? 'insert-chart' : 'insert-chart-outlined'} size={34} color={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Configurações"
+            component={SettingsScreen}
+            options={{
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons name={focused ? 'settings' : 'settings-outline'} size={34} color={color} />
               ),
             }}
           />
