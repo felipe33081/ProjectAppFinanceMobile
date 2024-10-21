@@ -6,6 +6,7 @@
 - Aba de Listagem das receitas
 - Aba de listagem de despesas
 4. Criar tela de Login
+  - Integrado com firebase
 
 ## Get started
 
