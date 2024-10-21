@@ -10,16 +10,33 @@ import { useDynamicColors } from '@/hooks/useDynamicColors';
 import { useEffect, useState } from 'react';
 import { EventRegister } from 'react-native-event-listeners';
 import { Feather } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SettingsScreen() {
     const { textsColor, barNotificationColor, textTitleCards, backgroundCardsColor } = useDynamicColors();
     const [darkMode, setDarkMode] = useState(false)
-    const [selectedTheme, setSelectedTheme] = useState('automatic');
+    const [selectedTheme, setSelectedTheme] = useState('light');
 
     const themes = [
         { name: 'Light', icon: 'sun' },
         { name: 'Dark', icon: 'moon' },
     ];
+
+    useEffect(() => {
+        const loadTheme = async () => {
+          try {
+            const storedTheme = await AsyncStorage.getItem('theme');
+            if (storedTheme !== null) {
+              setDarkMode(storedTheme === 'dark');
+              setSelectedTheme(storedTheme)
+            }
+          } catch (error) {
+            console.log('Erro ao carregar tema:', error);
+          }
+        };
+    
+        loadTheme();
+      }, []);
 
     const handleThemeChange = (themeName: String) => {
         setSelectedTheme(themeName.toLowerCase());
@@ -83,7 +100,7 @@ export default function SettingsScreen() {
                             <View style={styles.circleTheme}>
                                 <View style={styles.radioIcon}>
                                     {selectedTheme === theme.name.toLowerCase() && (
-                                        <View style={styles.selectedCircle} />
+                                        <View style={[styles.selectedCircle, { backgroundColor: textTitleCards }]} />
                                     )}
                                 </View>
                             </View>
@@ -152,8 +169,7 @@ const styles = StyleSheet.create({
     selectedCircle: {
         height: 12,
         width: 12,
-        borderRadius: 6,
-        backgroundColor: '#000',
+        borderRadius: 6
     },
     separator: {
         height: .8, // Define a espessura da linha

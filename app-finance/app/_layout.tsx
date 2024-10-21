@@ -15,6 +15,7 @@ import theme from '@/theme/Theme';
 import themeContext from '@/theme/themeContext';
 import DarkTheme from '@/theme/DarkTheme';
 import WhiteTheme from '@/theme/WhiteTheme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,6 +28,35 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     Kanit: require('../assets/fonts/Kanit-Light.ttf'),
   });
+
+  // Carregar tema do AsyncStorage
+  useEffect(() => {
+    const loadTheme = async () => {
+      try {
+        const storedTheme = await AsyncStorage.getItem('theme');
+        if (storedTheme !== null) {
+          setDarkMode(storedTheme === 'dark');
+        }
+      } catch (error) {
+        console.log('Erro ao carregar tema:', error);
+      }
+    };
+
+    loadTheme();
+  }, []);
+
+  // Salvar tema no AsyncStorage sempre que for alterado
+  useEffect(() => {
+    const saveTheme = async (themeMode: Boolean) => {
+      try {
+        await AsyncStorage.setItem('theme', themeMode ? 'dark' : 'light');
+      } catch (error) {
+        console.log('Erro ao salvar tema:', error);
+      }
+    };
+
+    saveTheme(darkMode);
+  }, [darkMode]);
 
   useEffect(() => {
     const listener = EventRegister.addEventListener('ChangeTheme', (data) => {
