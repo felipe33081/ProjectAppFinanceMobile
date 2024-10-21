@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Kanit'
   },
-  button:{
+  button: {
     alignItems: 'center',
   }
 });

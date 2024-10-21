@@ -47,7 +47,14 @@ export default function SettingsScreen() {
     return (
         <View style={[styles.container, { paddingTop: StatusBar.currentHeight || 0 }]}>
             <StatusBar backgroundColor={barNotificationColor} hidden={false} />
-            <Text style={[styles.title, { color: textTitleCards }]}>Tema do aplicativo</Text>
+
+            <View style={[styles.barTop, { backgroundColor: backgroundCardsColor }]}>
+                <Text style={[styles.barTopText, { color: textsColor }]}>
+                    Cofigurações
+                </Text>
+            </View>
+
+            <Text style={[styles.titleCardText, { color: textTitleCards }]}>Tema do aplicativo</Text>
             <View style={[styles.cardTheme, { backgroundColor: backgroundCardsColor }]}>
                 {themes.map((theme, index) => (
                     <View key={theme.name}>
@@ -93,9 +100,20 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
     container: {
+
+    },
+    barTop: {
+        marginBottom: 20,
         padding: 10
     },
+    barTopText: {
+        fontFamily: 'Kanit',
+        fontWeight: '400',
+        fontSize: 23
+    },
     cardTheme: {
+        marginTop: 10,
+        marginHorizontal: 10,
         padding: 10,
         borderRadius: 10,
         justifyContent: 'flex-start'
@@ -145,5 +163,11 @@ const styles = StyleSheet.create({
     circleTheme: {
         alignItems: 'flex-end',
         flex: 1
-    }
+    },
+    titleCardText: {
+        fontFamily: 'Kanit',
+        fontWeight: '400',
+        fontSize: 22,
+        paddingLeft: 18
+    },
 });

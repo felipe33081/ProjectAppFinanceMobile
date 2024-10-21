@@ -8,7 +8,7 @@ import {
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 export default function TransactionsScreen() {
-    const { textsColor, barNotificationColor, textTitleCards } = useDynamicColors();
+    const { backgroundCardsColor, textsColor, barNotificationColor, textTitleCards } = useDynamicColors();
 
     return (
         <View style={{ paddingTop: StatusBar.currentHeight || 0 }}>
@@ -16,6 +16,11 @@ export default function TransactionsScreen() {
                 backgroundColor={barNotificationColor}
                 hidden={false}
             />
+            <View style={[styles.barTop, { backgroundColor: backgroundCardsColor }]}>
+                <Text style={[styles.barTopText, { color: textsColor }]}>
+                    Contas
+                </Text>
+            </View>
             <View style={styles.container}>
                 <Text style={[styles.titleCardText, { color: textTitleCards, fontSize: 30 }]}>Tela de Contas</Text>
             </View>
@@ -31,5 +36,16 @@ const styles = StyleSheet.create({
         fontFamily: 'Kanit',
         fontWeight: '400',
         fontSize: 25,
-    }
+    },
+    barTop: {
+        backgroundColor: '#000',
+        marginBottom: 20,
+        padding: 10
+    },
+    barTopText: {
+        fontFamily: 'Kanit',
+        fontWeight: '400',
+        fontSize: 23,
+        color: '#fff'
+    },
 });
