@@ -3,8 +3,8 @@
 ## ToDo in Project:
 1. Criar gráfico de despesas com categorias
 2. Criar tela de Contas (entradas/saidas)
-   2.1. Aba de Listagem das receitas
-   2.2. Aba de listagem de despesas
+- Aba de Listagem das receitas
+- Aba de listagem de despesas
 4. Criar tela de Login
 
 ## Get started
