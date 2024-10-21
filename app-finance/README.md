@@ -1,9 +1,9 @@
 # Welcome to your Expo app 👋
 
 ## ToDo in Project:
-- Criar gráfico de despesas com categorias
-- Criar tela de Contas (entradas/saidas)
-- Criar tela de Login
+1 Criar gráfico de despesas com categorias
+2 Criar tela de Contas (entradas/saidas)
+3 Criar tela de Login
 
 ## Get started
 
