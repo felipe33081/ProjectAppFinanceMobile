@@ -81,13 +81,13 @@ const styles = StyleSheet.create({
   },
   legendContainer: {
     flex: 1,
-    marginLeft: 20, // Espaçamento entre gráfico e legenda
+    marginHorizontal: 10
   },
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between', // Para garantir que o texto e os valores fiquem separados
-    marginVertical: 5,
+    justifyContent: 'space-between',
+    marginVertical: 4,
   },
   legendColor: {
     width: 12,
@@ -98,13 +98,11 @@ const styles = StyleSheet.create({
   legendText: {
     fontSize: 14,
     flex: 1,
-    fontFamily: 'Kanit',
-    color: '#7F7F7F',
+    fontFamily: 'Kanit'
   },
   legendAmount: {
     fontSize: 14,
-    fontFamily: 'Kanit',
-    color: '#7F7F7F',
+    fontFamily: 'Kanit'
   },
 });
 
