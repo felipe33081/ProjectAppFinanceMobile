@@ -1,23 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, TextInput, StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, TextInput, StatusBar, ScrollView, RefreshControl } from 'react-native';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker'; // Certifique-se de importar do pacote correto
 import { useDynamicColors } from '@/hooks/useDynamicColors';
-
-enum MonthsEnum {
-  JAN = 1,
-  FEB,
-  MAR,
-  APR,
-  MAY,
-  JUN,
-  JUL,
-  AUG,
-  SEP,
-  OCT,
-  NOV,
-  DEC,
-}
 
 interface Transaction {
   id: string;
@@ -63,17 +48,76 @@ const initialTransactions: Transaction[] = [
   },
 ];
 
+// Definindo o enum para os meses
+enum MonthsEnum {
+  JAN = 1,
+  FEB,
+  MAR,
+  APR,
+  MAY,
+  JUN,
+  JUL,
+  AUG,
+  SEP,
+  OCT,
+  NOV,
+  DEC,
+}
+
+// Função para obter o rótulo de um mês a partir do enum
+const getMonthLabel = (month: number): string => {
+  switch (month) {
+    case MonthsEnum.JAN: return 'JAN';
+    case MonthsEnum.FEB: return 'FEV';
+    case MonthsEnum.MAR: return 'MAR';
+    case MonthsEnum.APR: return 'ABR';
+    case MonthsEnum.MAY: return 'MAI';
+    case MonthsEnum.JUN: return 'JUN';
+    case MonthsEnum.JUL: return 'JUL';
+    case MonthsEnum.AUG: return 'AGO';
+    case MonthsEnum.SEP: return 'SET';
+    case MonthsEnum.OCT: return 'OUT';
+    case MonthsEnum.NOV: return 'NOV';
+    case MonthsEnum.DEC: return 'DEZ';
+    default: return '';
+  }
+};
+
 const TransactionsScreen = () => {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(initialTransactions);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalDateVisible, setModalDateVisible] = useState(false);
   const [filter, setFilter] = useState<'Todas' | 'Receitas' | 'Despesas'>('Todas');
-  const [selectedMonth, setSelectedMonth] = useState('Outubro');
+  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [newTransaction, setNewTransaction] = useState<Transaction | null>(null);
-  const { textTitleCards, barNotificationColor, textsColor, backgroundCardsColor } = useDynamicColors()
+  const { textTitleCards, barNotificationColor, textsColor, backgroundCardsColor } = useDynamicColors();
 
-  const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  useEffect(() => {
+
+    console.log(selectedMonth + "-" + selectedYear)
+  }, []);
+
+  useEffect(() => {
+    const updateDate = () => {
+      const currentMonth = new Date().getMonth() + 1;
+      const currentYear = new Date().getFullYear();
+
+      console.log(currentMonth + "-" + currentYear)
+      // Verifica se o mês ou o ano mudou
+      if (selectedMonth !== currentMonth || selectedYear !== currentYear) {
+        setSelectedMonth(currentMonth);
+        setSelectedYear(currentYear);
+      }
+    };
+    // Chama a função a cada 1 hora para garantir que o mês é atualizado corretamente
+    const interval = setInterval(updateDate, 3600000); // 1 hora = 3600000 ms
+
+    // Limpa o intervalo quando o componente for desmontado
+    return () => clearInterval(interval);
+  }, [selectedMonth, selectedYear]);
 
   const filterTransactions = (type: 'Todas' | 'Receitas' | 'Despesas') => {
     setFilter(type);
@@ -82,6 +126,14 @@ const TransactionsScreen = () => {
     } else {
       setFilteredTransactions(transactions.filter(t => t.type === type.slice(0, -1)));
     }
+  };
+
+  const handleMonthYearSelect = (month: number, year: number) => {
+    setSelectedMonth(month);
+    setSelectedYear(year);
+
+    console.log(month + "-" + year)
+    setModalDateVisible(false);
   };
 
   const renderTransactionItem = ({ item }: { item: Transaction }) => (
@@ -111,7 +163,7 @@ const TransactionsScreen = () => {
         <View style={styles.paidStatus}>
           {item.paid ? (
             <View>
-                <AntDesign name="checkcircle" size={20} color="#4eb251" />
+              <AntDesign name="checkcircle" size={20} color="#4eb251" />
             </View>
           ) : (
             <AntDesign name="closecircle" size={20} color="#f74236" />
@@ -130,23 +182,20 @@ const TransactionsScreen = () => {
     }
   };
 
-  console.log(selectedMonth)
-
   return (
     <View style={{ flex: 1, paddingTop: StatusBar.currentHeight || 0 }}>
       <View style={[styles.barTop, { backgroundColor: backgroundCardsColor }]}>
-        <TouchableOpacity onPress={() => filterTransactions('Todas')}>
-          <Text style={[styles.barTopText, { color: textsColor }]}>Contas</Text>
+        <Text style={[styles.barTopText, { color: textsColor }]}>Contas</Text>
+      </View>
+
+      {/* Mês e Ano como botão */}
+      <View style={[styles.modalDate, { backgroundColor: backgroundCardsColor }]}>
+        <TouchableOpacity onPress={() => setModalDateVisible(true)}>
+          <Text style={[styles.title, { color: textsColor }]}>
+            {getMonthLabel(selectedMonth)} {selectedYear}
+            <AntDesign name="down" size={24} color={textsColor} />
+          </Text>
         </TouchableOpacity>
-        <Picker
-          selectedValue={selectedMonth}
-          style={[styles.headerDate, { color: textsColor }]}
-          onValueChange={(itemValue) => setSelectedMonth(itemValue)}
-        >
-          {months.map((month, index) => (
-            <Picker.Item key={index} label={month} value={month} />
-          ))}
-        </Picker>
       </View>
 
       <View style={[styles.filterContainer, { backgroundColor: backgroundCardsColor }]}>
@@ -233,6 +282,49 @@ const TransactionsScreen = () => {
           </View>
         </View>
       </Modal>
+
+      {/* Modal para selecionar mês e ano */}
+      <Modal
+        visible={modalDateVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalDateVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={[styles.modalContent, { backgroundColor: backgroundCardsColor }]}>
+            {/* Seletor de Ano */}
+            <View style={styles.yearPicker}>
+              <AntDesign name="left" size={24} color={textsColor} onPress={() => setSelectedYear(selectedYear - 1)} />
+              <Text style={[styles.modalText, { color: textTitleCards }]}>{selectedYear}</Text>
+              <AntDesign name="right" size={24} color={textsColor} onPress={() => setSelectedYear(selectedYear + 1)} />
+            </View>
+
+            {/* Seletor de Mês */}
+            <View style={styles.monthPicker}>
+              {Object.values(MonthsEnum).filter(value => typeof value === 'number').map((monthValue) => (
+                <TouchableOpacity
+                  key={monthValue}
+                  onPress={() => handleMonthYearSelect(monthValue as number, selectedYear)}
+                  style={[styles.monthButton]}
+                >
+                  <Text style={[styles.modalText, { color: textTitleCards }, selectedMonth === monthValue ? styles.selectedMonth : null]}>
+                    {getMonthLabel(monthValue as number)}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <View style={styles.modalActions}>
+              <TouchableOpacity onPress={() => setModalDateVisible(false)}>
+                <Text style={styles.cancelText}>CANCELAR</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleMonthYearSelect(new Date().getMonth() + 1, new Date().getFullYear())}>
+                <Text style={styles.currentText}>MÊS ATUAL</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -241,8 +333,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  title: {
+    fontSize: 20,
+    fontFamily: 'Kanit',
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+    color: '#e4e5e8'
+  },
+  modalDate: {
+    alignItems: 'center'
+  },
   barTop: {
-    marginBottom: 20,
     padding: 10
   },
   barTopText: {
@@ -343,6 +445,41 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
+  },
+  yearPicker: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  monthPicker: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    marginVertical: 20,
+  },
+  monthButton: {
+    width: '30%',
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+  },
+  selectedMonth: {
+    color: '#8858ce',
+  },
+  modalActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+  },
+  cancelText: {
+    color: '#8858ce',
+    fontSize: 16,
+  },
+  currentText: {
+    color: '#8858ce',
+    fontSize: 16,
   },
 });
 

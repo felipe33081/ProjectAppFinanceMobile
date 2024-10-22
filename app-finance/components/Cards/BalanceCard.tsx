@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
@@ -40,10 +40,8 @@ const getMonthLabel = (month: number): string => {
   }
 };
 
-const years = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i);
-
 const BalanceCard = () => {
-  const { backgroundCardsColor, textsColor } = useDynamicColors();
+  const { backgroundCardsColor, textTitleCards, textsColor, buttonsColors } = useDynamicColors();
   const [eyeVisible, setEyeVisible] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1); // Mês começa de 1
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -53,42 +51,62 @@ const BalanceCard = () => {
     Kanit: require('../../assets/fonts/Kanit-Light.ttf'),
   });
 
-  async function HandleEyeVisible() {
-    setEyeVisible(!eyeVisible);
-  };
+  useEffect(() => {
+    
+    console.log(selectedMonth + "-" + selectedYear)
+  }, []);
+  
+  // Função para atualizar o mês e o ano automaticamente se o mês virar
+  useEffect(() => {
+    const updateDate = () => {
+      const currentMonth = new Date().getMonth() + 1;
+      const currentYear = new Date().getFullYear();
+
+      // Verifica se o mês ou o ano mudou
+      if (selectedMonth !== currentMonth || selectedYear !== currentYear) {
+        setSelectedMonth(currentMonth);
+        setSelectedYear(currentYear);
+      }
+    };
+    // Chama a função a cada 1 hora para garantir que o mês é atualizado corretamente
+    const interval = setInterval(updateDate, 3600000); // 1 hora = 3600000 ms
+
+    // Limpa o intervalo quando o componente for desmontado
+    return () => clearInterval(interval);
+  }, [selectedMonth, selectedYear]);
 
   const handleMonthYearSelect = (month: number, year: number) => {
     setSelectedMonth(month);
     setSelectedYear(year);
-    
-    //console.log(month + "-" + year)
+
+    console.log(month + "-" + year)
     setModalVisible(false);
   };
 
   return (
     <View>
       <View style={[styles.card, { backgroundColor: backgroundCardsColor }]}>
-        
+
         {/* Mês e Ano como botão */}
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Text style={[styles.title, { color: textsColor }]}>
             {getMonthLabel(selectedMonth)} {selectedYear}
-            <AntDesign name="down" size={24} color="#fff"/>
+            <AntDesign name="down" size={24} color={textsColor} />
           </Text>
         </TouchableOpacity>
-        
+
         <Text style={[styles.subtitle, { color: '#8f8d98' }]}>Saldo em Conta</Text>
-        
-        {eyeVisible ? 
-          <Text style={[styles.balanceText, { color: textsColor }]}>R$3.700,00</Text> : 
+
+        {eyeVisible ?
+          <Text style={[styles.balanceText, { color: textsColor }]}>R$3.700,00</Text> :
           <Text style={[styles.balanceText, { color: textsColor }]}>*******</Text>
         }
 
-        <TouchableOpacity style={styles.button} onPress={HandleEyeVisible}>
-          <MaterialCommunityIcons 
-            name={eyeVisible ? "eye-outline" : "eye-off-outline"} 
-            size={22} 
-            color="#8f8d98" 
+        <TouchableOpacity style={styles.button} onPress={() => setEyeVisible(!eyeVisible)}>
+          <MaterialCommunityIcons
+            name={eyeVisible ? "eye-outline" : "eye-off-outline"}
+            size={22}
+            color="#8f8d98"
           />
         </TouchableOpacity>
 
@@ -98,7 +116,7 @@ const BalanceCard = () => {
             <AntDesign name="upcircle" size={38} color="#4eb251" />
             <View style={{ marginLeft: 10 }}>
               <Text style={[styles.kanitMedium, { color: '#8f8d98' }]}>Receitas</Text>
-              {eyeVisible ? 
+              {eyeVisible ?
                 <Text style={{ color: '#4eb251', fontSize: 18, fontFamily: 'Kanit' }}>R$ 1.000,00</Text> :
                 <Text style={{ color: '#4eb251', fontSize: 18, fontFamily: 'Kanit' }}>*******</Text>
               }
@@ -110,8 +128,8 @@ const BalanceCard = () => {
             <AntDesign name="downcircle" size={38} color="#f74236" />
             <View style={{ marginLeft: 10 }}>
               <Text style={[styles.kanitMedium, { color: '#8f8d98' }]}>Despesas</Text>
-              {eyeVisible ? 
-                <Text style={{ color: '#f74236', fontSize: 18, fontFamily: 'Kanit' }}>R$ 7.500,00</Text> : 
+              {eyeVisible ?
+                <Text style={{ color: '#f74236', fontSize: 18, fontFamily: 'Kanit' }}>R$ 7.500,00</Text> :
                 <Text style={{ color: '#f74236', fontSize: 18, fontFamily: 'Kanit' }}>*******</Text>
               }
             </View>
@@ -127,12 +145,12 @@ const BalanceCard = () => {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
+          <View style={[styles.modalContent, {backgroundColor: backgroundCardsColor}]}>
             {/* Seletor de Ano */}
             <View style={styles.yearPicker}>
-              <AntDesign name="left" size={24} color="#fff" onPress={() => setSelectedYear(selectedYear - 1)} />
-              <Text style={styles.modalText}>{selectedYear}</Text>
-              <AntDesign name="right" size={24} color="#fff" onPress={() => setSelectedYear(selectedYear + 1)} />
+              <AntDesign name="left" size={24} color={textsColor} onPress={() => setSelectedYear(selectedYear - 1)} />
+              <Text style={[styles.modalText, { color: textTitleCards }]}>{selectedYear}</Text>
+              <AntDesign name="right" size={24} color={textsColor} onPress={() => setSelectedYear(selectedYear + 1)} />
             </View>
 
             {/* Seletor de Mês */}
@@ -141,9 +159,9 @@ const BalanceCard = () => {
                 <TouchableOpacity
                   key={monthValue}
                   onPress={() => handleMonthYearSelect(monthValue as number, selectedYear)}
-                  style={styles.monthButton}
+                  style={[styles.monthButton]}
                 >
-                  <Text style={[styles.modalText, selectedMonth === monthValue ? styles.selectedMonth : null]}>
+                  <Text style={[styles.modalText, {color: textTitleCards}, selectedMonth === monthValue ? styles.selectedMonth : null]}>
                     {getMonthLabel(monthValue as number)}
                   </Text>
                 </TouchableOpacity>
@@ -164,6 +182,8 @@ const BalanceCard = () => {
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   card: {
@@ -217,7 +237,6 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '90%',
-    backgroundColor: '#3c3c44',
     padding: 20,
     borderRadius: 10,
   },
@@ -239,7 +258,6 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 18,
-    color: '#fff',
   },
   selectedMonth: {
     color: '#8858ce',
