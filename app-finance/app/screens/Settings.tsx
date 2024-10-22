@@ -126,7 +126,8 @@ const styles = StyleSheet.create({
     barTopText: {
         fontFamily: 'Kanit',
         fontWeight: '400',
-        fontSize: 23
+        fontSize: 23,
+        textAlign: 'center'
     },
     cardTheme: {
         marginTop: 10,
