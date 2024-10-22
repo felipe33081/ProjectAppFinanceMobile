@@ -24,18 +24,18 @@ enum MonthsEnum {
 // Função para obter o rótulo de um mês a partir do enum
 const getMonthLabel = (month: number): string => {
   switch (month) {
-    case MonthsEnum.JAN: return 'JAN.';
-    case MonthsEnum.FEB: return 'FEV.';
-    case MonthsEnum.MAR: return 'MAR.';
-    case MonthsEnum.APR: return 'ABR.';
-    case MonthsEnum.MAY: return 'MAI.';
-    case MonthsEnum.JUN: return 'JUN.';
-    case MonthsEnum.JUL: return 'JUL.';
-    case MonthsEnum.AUG: return 'AGO.';
-    case MonthsEnum.SEP: return 'SET.';
-    case MonthsEnum.OCT: return 'OUT.';
-    case MonthsEnum.NOV: return 'NOV.';
-    case MonthsEnum.DEC: return 'DEZ.';
+    case MonthsEnum.JAN: return 'JAN';
+    case MonthsEnum.FEB: return 'FEV';
+    case MonthsEnum.MAR: return 'MAR';
+    case MonthsEnum.APR: return 'ABR';
+    case MonthsEnum.MAY: return 'MAI';
+    case MonthsEnum.JUN: return 'JUN';
+    case MonthsEnum.JUL: return 'JUL';
+    case MonthsEnum.AUG: return 'AGO';
+    case MonthsEnum.SEP: return 'SET';
+    case MonthsEnum.OCT: return 'OUT';
+    case MonthsEnum.NOV: return 'NOV';
+    case MonthsEnum.DEC: return 'DEZ';
     default: return '';
   }
 };
@@ -61,7 +61,7 @@ const BalanceCard = () => {
     setSelectedMonth(month);
     setSelectedYear(year);
     
-    //console.log(getMonthLabel(month))
+    //console.log(month + "-" + year)
     setModalVisible(false);
   };
 
@@ -73,6 +73,7 @@ const BalanceCard = () => {
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Text style={[styles.title, { color: textsColor }]}>
             {getMonthLabel(selectedMonth)} {selectedYear}
+            <AntDesign name="down" size={24} color="#fff"/>
           </Text>
         </TouchableOpacity>
         

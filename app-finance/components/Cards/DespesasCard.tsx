@@ -1,56 +1,110 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle, Platform } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { PieChart } from 'react-native-chart-kit';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 
-interface CardProps {
-  title?: string;
-  subtitle?: string;
-  children?: React.ReactNode;
-  style?: ViewStyle;
-}
+const screenWidth = Dimensions.get('window').width;
 
-const DespesasCard: React.FC<CardProps> = ({ style }) => {
+// Dados de exemplo para o gráfico de pizza
+const data = [
+  {
+    name: 'Alimentação',
+    amount: 650,
+    color: '#8858ce',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+  {
+    name: 'Casa',
+    amount: 276,
+    color: '#36a2eb',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+  {
+    name: 'Lazer',
+    amount: 220,
+    color: '#ff6384',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+  {
+    name: 'Outros',
+    amount: 290,
+    color: '#c9cbcf',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+];
+
+const DespesasCard = () => {
   const { textsColor, backgroundCardsColor } = useDynamicColors();
 
   return (
-    <View style={[styles.card, style, { backgroundColor: backgroundCardsColor }]}>
-      <Text style={[styles.depesasCardText, { color: textsColor }]}>Graficos vem aqui com categorias</Text>
+    <View style={[styles.card, { backgroundColor: backgroundCardsColor }]}>
+      <View style={styles.chartContainer}>
+        <View style={styles.legendContainer}>
+          {data.map((item, index) => (
+            <View key={index} style={styles.legendItem}>
+              <View style={[styles.legendColor, { backgroundColor: item.color }]} />
+              <Text style={[styles.legendText, { color: textsColor }]}>
+                {item.name}
+              </Text>
+              <Text style={[styles.legendAmount, { color: textsColor }]}>
+                R${item.amount},00
+              </Text>
+            </View>
+          ))}
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    //backgroundColor: Colors.CardsbackgroundColor, // Lighter background color
     borderRadius: 20,
-    padding: 10,
+    padding: 15,
     margin: 10,
-    marginBottom: 25
+    marginBottom: 25,
   },
   title: {
-    fontSize: 20,
-    // fontWeight: 'bold', // Uncomment if you want bold font
-    marginTop: 0,
-    textAlign: 'center',
-    fontFamily: 'Kanit'
-  },
-  subtitle: {
     fontSize: 16,
-    color: 'gray',
-    marginBottom: 20,
-    textAlign: 'center',
+    marginBottom: 10,
+    fontFamily: 'Kanit',
+    fontWeight: '500',
+    color: '#7F7F7F',
   },
-  content: {
-    flex: 1,
-    margin: 15,
-    justifyContent: 'center', // Centraliza verticalmente
+  chartContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
-  depesasCardText: {
+  legendContainer: {
+    flex: 1,
+    marginLeft: 20, // Espaçamento entre gráfico e legenda
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between', // Para garantir que o texto e os valores fiquem separados
+    marginVertical: 5,
+  },
+  legendColor: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 8,
+  },
+  legendText: {
+    fontSize: 14,
+    flex: 1,
     fontFamily: 'Kanit',
-    fontWeight: '400',
-    fontSize: 18,
-    textAlign: "center"
+    color: '#7F7F7F',
+  },
+  legendAmount: {
+    fontSize: 14,
+    fontFamily: 'Kanit',
+    color: '#7F7F7F',
   },
 });
 

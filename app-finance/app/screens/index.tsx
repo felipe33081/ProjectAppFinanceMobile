@@ -50,7 +50,7 @@ export default function HomeScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <View>
-          <Text style={[styles.titleCardText, { color: textTitleCards }]}>Depesas por categoria</Text>
+          <Text style={[styles.titleCardText, { color: textTitleCards }]}>Despesas por categoria</Text>
           <DespesasCard />
         </View>
 
