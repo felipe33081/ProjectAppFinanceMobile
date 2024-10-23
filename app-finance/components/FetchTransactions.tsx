@@ -1,5 +1,5 @@
-import { getFirestore, collection, getDocs, addDoc, query } from 'firebase/firestore/lite';
-import { firebaseInitialize } from '../firebaseconfig';
+import { getFirestore, collection, getDocs, addDoc, query } from '@react-native-firebase/firestore';
+import { firebaseInitialize } from '@/firebaseconfig';
 
 const db = getFirestore(firebaseInitialize);
 

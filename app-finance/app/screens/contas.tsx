@@ -93,7 +93,7 @@ const TransactionsScreen = () => {
   const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [newTransaction, setNewTransaction] = useState<Transaction | null>(null);
-  const { textTitleCards, barNotificationColor, textsColor, backgroundCardsColor } = useDynamicColors();
+  const { textTitleCards, barNotificationColor, textsColor, backgroundCardsColor, buttonsColors } = useDynamicColors();
 
   useEffect(() => {
 
@@ -218,7 +218,7 @@ const TransactionsScreen = () => {
       />
 
       <TouchableOpacity
-        style={styles.addButton}
+        style={[styles.addScreenButton, { backgroundColor: buttonsColors }]}
         onPress={() => setModalVisible(true)}
       >
         <AntDesign name="plus" size={30} color="#fff" />
@@ -232,33 +232,41 @@ const TransactionsScreen = () => {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Nova transação</Text>
+          <View style={[styles.modalContent, { backgroundColor: backgroundCardsColor }]}>
+            <Text style={[styles.modalTitle, { color: textTitleCards }]}>
+              Nova transação
+            </Text>
             <TextInput
               placeholder="Descrição"
+              placeholderTextColor="gray"
               onChangeText={(text) => setNewTransaction({ ...newTransaction!, description: text })}
-              style={styles.input}
+              style={[styles.input, { color: '#4a4564' }, { borderColor: textTitleCards }]}
             />
             <TextInput
               placeholder="Categoria"
+              placeholderTextColor="gray"
               onChangeText={(text) => setNewTransaction({ ...newTransaction!, category: text })}
-              style={styles.input}
+              style={[styles.input, { color: textsColor }, { borderColor: textTitleCards }]}
             />
             <TextInput
               placeholder="Valor"
+              placeholderTextColor="gray"
               keyboardType="numeric"
               onChangeText={(text) => setNewTransaction({ ...newTransaction!, amount: parseFloat(text) })}
-              style={styles.input}
+              style={[styles.input, { color: textsColor }, { borderColor: textTitleCards }]}
             />
-            <TouchableOpacity style={styles.addButton} onPress={handleAddTransaction}>
-              <Text style={styles.addButtonText}>Adicionar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
-              <AntDesign name="close" size={24} color="#000" />
-            </TouchableOpacity>
+            <View style={styles.buttonsContainer}>
+              <TouchableOpacity style={[styles.addButton, { backgroundColor: buttonsColors }]} onPress={handleAddTransaction}>
+                <Text style={styles.addButtonText}>Adicionar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.closeButton, { backgroundColor: backgroundCardsColor }]} onPress={() => setModalVisible(false)}>
+                <AntDesign name="close" size={24} color={textsColor} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
+
 
       {/* Modal para detalhes da transação */}
       <Modal
@@ -268,17 +276,26 @@ const TransactionsScreen = () => {
         onRequestClose={() => setSelectedTransaction(null)}
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{selectedTransaction?.type}</Text>
-            <Text>Categoria: {selectedTransaction?.category}</Text>
-            <Text>Descrição: {selectedTransaction?.description}</Text>
-            <Text>Data: {selectedTransaction?.date}</Text>
-            <Text>Valor: R${selectedTransaction?.amount.toFixed(2)}</Text>
-            <Text>Conta: {selectedTransaction?.account}</Text>
-            <Text>Pago: {selectedTransaction?.paid ? 'Sim' : 'Não'}</Text>
-            <TouchableOpacity style={styles.closeButton} onPress={() => setSelectedTransaction(null)}>
-              <AntDesign name="close" size={24} color="#000" />
-            </TouchableOpacity>
+          <View style={[styles.modalContent, { backgroundColor: backgroundCardsColor }]}>
+            <View style={styles.modalHeader}>
+              <Text style={[styles.modalTitle, { color: textsColor }]}>
+                {selectedTransaction?.type === 'Receita' ? 'Receita' : 'Despesa'}
+              </Text>
+              <TouchableOpacity style={styles.closeButton} onPress={() => setSelectedTransaction(null)}>
+                <AntDesign name="close" size={24} color={textsColor} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.modalBody}>
+              <Text style={[styles.modalText, { color: textsColor }]}>Categoria: {selectedTransaction?.category}</Text>
+              <Text style={[styles.modalText, { color: textsColor }]}>Descrição: {selectedTransaction?.description}</Text>
+              <Text style={[styles.modalText, { color: textsColor }]}>Data: {selectedTransaction?.date}</Text>
+              <Text style={[styles.modalText, { color: textsColor }]}>
+                Valor: R${selectedTransaction?.amount.toFixed(2)}
+              </Text>
+              <Text style={[styles.modalText, { color: textsColor }]}>Conta: {selectedTransaction?.account}</Text>
+              <Text style={[styles.modalText, { color: textsColor }]}>Pago: {selectedTransaction?.paid ? 'Sim' : 'Não'}</Text>
+            </View>
           </View>
         </View>
       </Modal>
@@ -333,6 +350,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+  },
   title: {
     fontSize: 20,
     fontFamily: 'Kanit',
@@ -352,11 +375,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 23,
     textAlign: 'center'
-  },
-  headerDate: {
-    fontFamily: 'Kanit',
-    fontWeight: '400',
-    fontSize: 23
   },
   filterContainer: {
     flexDirection: 'row',
@@ -407,10 +425,18 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   addButton: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  addScreenButton: {
     position: 'absolute',
     bottom: 30,
     right: 30,
-    backgroundColor: '#8858ce',
     padding: 15,
     borderRadius: 30,
     alignItems: 'center',
@@ -418,33 +444,17 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     color: '#fff',
-    fontSize: 16,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  },
-  modalContent: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 10,
-    marginHorizontal: 20,
-  },
-  modalTitle: {
-    fontSize: 20,
     fontWeight: 'bold',
+    fontSize: 18,
   },
   input: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    marginBottom: 20,
-    padding: 10,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    backgroundColor: '#f5f5f5',
   },
   yearPicker: {
     flexDirection: 'row',
@@ -462,9 +472,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: 'center',
   },
-  modalText: {
-    fontSize: 18,
-  },
   selectedMonth: {
     color: '#8858ce',
   },
@@ -480,6 +487,40 @@ const styles = StyleSheet.create({
   currentText: {
     color: '#8858ce',
     fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  },
+  modalContent: {
+    width: '85%',
+    padding: 25,
+    borderRadius: 20,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 25,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  modalBody: {
+    marginBottom: 15
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 5
+  },
+  closeButton: {
+    padding: 10,
+    borderRadius: 10,
   },
 });
 

@@ -229,17 +229,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  },
-  modalContent: {
-    width: '90%',
-    padding: 20,
-    borderRadius: 10,
-  },
   yearPicker: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -256,9 +245,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: 'center',
   },
-  modalText: {
-    fontSize: 18,
-  },
   selectedMonth: {
     color: '#8858ce',
   },
@@ -274,6 +260,34 @@ const styles = StyleSheet.create({
   currentText: {
     color: '#8858ce',
     fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  },
+  modalContent: {
+    width: '90%',
+    padding: 25,
+    borderRadius: 15
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold'
+  },
+  modalBody: {
+    marginBottom: 5,
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 5
   },
 });
 

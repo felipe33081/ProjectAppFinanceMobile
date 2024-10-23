@@ -38,28 +38,22 @@ export default function SettingsScreen() {
         loadTheme();
       }, []);
 
-    const handleThemeChange = (themeName: String) => {
-        setSelectedTheme(themeName.toLowerCase());
-
-        if (themeName.toLowerCase() === 'dark') {
-            setDarkMode(true);
-            EventRegister.emit('ChangeTheme', true);
-        } else if (themeName.toLowerCase() === 'light') {
-            setDarkMode(false);
-            EventRegister.emit('ChangeTheme', false);
-        } else {
-            if (selectedTheme === 'dark') {
-                setDarkMode(true)
-            }
-            else if (selectedTheme === 'light') {
-                setDarkMode(false)
-            }
-            EventRegister.emit('ChangeTheme', darkMode)
-            const isSystemDarkMode = darkMode
-            setDarkMode(isSystemDarkMode);
-            EventRegister.emit('ChangeTheme', isSystemDarkMode);
+      const handleThemeChange = async (themeName: string) => {
+        const normalizedThemeName = themeName.toLowerCase();
+      
+        // Atualiza o estado imediatamente para evitar atrasos visuais
+        setSelectedTheme(normalizedThemeName);
+      
+        if (normalizedThemeName === 'dark') {
+          setDarkMode(true);
+          await AsyncStorage.setItem('theme', 'dark'); // Armazena o tema no AsyncStorage
+          EventRegister.emit('ChangeTheme', true); // Emite o evento de alteração do tema
+        } else if (normalizedThemeName === 'light') {
+          setDarkMode(false);
+          await AsyncStorage.setItem('theme', 'light'); // Armazena o tema no AsyncStorage
+          EventRegister.emit('ChangeTheme', false); // Emite o evento de alteração do tema
         }
-    };
+      };
 
     return (
         <View style={[styles.container, { paddingTop: StatusBar.currentHeight || 0 }]}>

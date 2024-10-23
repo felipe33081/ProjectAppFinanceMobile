@@ -16,14 +16,19 @@ import themeContext from '@/theme/themeContext';
 import DarkTheme from '@/theme/DarkTheme';
 import WhiteTheme from '@/theme/WhiteTheme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoginScreen from './screens/login';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const { barTabs, activeBarTab } = useDynamicColors();
   const [darkMode, setDarkMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [loaded] = useFonts({
     Kanit: require('../assets/fonts/Kanit-Light.ttf'),
@@ -80,49 +85,68 @@ export default function RootLayout() {
     return null;
   }
 
+  function AppTabs() {
+    return (
+      <Tab.Navigator
+        initialRouteName='index'
+        screenOptions={{
+          tabBarActiveTintColor: darkMode === true ? DarkTheme.colors.notification : WhiteTheme.colors.notification,
+          tabBarInactiveTintColor: 'gray',
+          tabBarStyle: { backgroundColor: darkMode === true ? DarkTheme.colors.card : WhiteTheme.colors.card },
+          headerShown: false,
+        }}>
+        <Tab.Screen
+          name="index"
+          component={HomeScreen}
+          options={{
+            title: 'index',
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="contas"
+          component={TransactionsScreen}
+          options={{
+            title: 'Contas',
+            tabBarIcon: ({ color, focused }) => (
+              <MaterialIcons name={focused ? 'insert-chart' : 'insert-chart-outlined'} size={34} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            title: 'Configurações',
+            tabBarIcon: ({ color, focused }) => (
+              <Ionicons name={focused ? 'settings' : 'settings-outline'} size={34} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  }
+
   return (
     <themeContext.Provider value={darkMode === true ? theme.dark : theme.light}>
       <NavigationContainer
         independent={true}
         theme={darkMode === true ? DarkTheme : WhiteTheme}>
-        <Tab.Navigator
-          screenOptions={{
-            tabBarActiveTintColor: darkMode === true ? DarkTheme.colors.notification : WhiteTheme.colors.notification,
-            tabBarInactiveTintColor: 'gray',
-            tabBarStyle: { backgroundColor: darkMode === true ? DarkTheme.colors.card : WhiteTheme.colors.card },
-            headerShown: false,
-          }}>
-          <Tab.Screen
-            name="index"
-            component={HomeScreen}
-            options={{
-              title: 'index',
-              tabBarIcon: ({ color, focused }) => (
-                <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="contas"
-            component={TransactionsScreen}
-            options={{
-              title: 'Contas',
-              tabBarIcon: ({ color, focused }) => (
-                <MaterialIcons name={focused ? 'insert-chart' : 'insert-chart-outlined'} size={34} color={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{
-              title: 'Configurações',
-              tabBarIcon: ({ color, focused }) => (
-                <Ionicons name={focused ? 'settings' : 'settings-outline'} size={34} color={color} />
-              ),
-            }}
-          />
-        </Tab.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {/* Se o usuário não estiver autenticado, mostre a tela de login */}
+          {!isAuthenticated ? (
+            <Stack.Screen name="Login">
+              {props => (
+                <LoginScreen {...props} onLogin={() => setIsAuthenticated(true)} />
+              )}
+            </Stack.Screen>
+          ) : (
+            /* Quando o usuário estiver autenticado, mostre as tabs */
+            <Stack.Screen name="AppTabs" component={AppTabs} />
+          )}
+        </Stack.Navigator>
       </NavigationContainer>
     </themeContext.Provider>
   );
