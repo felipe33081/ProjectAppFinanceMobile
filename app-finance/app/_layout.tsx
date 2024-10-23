@@ -27,7 +27,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const { barTabs, activeBarTab } = useDynamicColors();
   const [darkMode, setDarkMode] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [loaded] = useFonts({

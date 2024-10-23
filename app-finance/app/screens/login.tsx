@@ -1,24 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Button } from 'react-native';
 import { useDynamicColors } from '@/hooks/useDynamicColors';
-import auth from '@react-native-firebase/auth';
 
 interface LoginScreenProps {
   onLogin: () => void; // Função que não recebe parâmetros e retorna void
 }
-
-// auth()
-//   .signInAnonymously()
-//   .then(() => {
-//     console.log('User signed in anonymously');
-//   })
-//   .catch(error => {
-//     if (error.code === 'auth/operation-not-allowed') {
-//       console.log('Enable anonymous in your firebase console.');
-//     }
-
-//     console.error(error);
-//   });
 
 export default function LoginScreen({ onLogin }: LoginScreenProps) {
   const { backgroundCardsColor, textsColor, buttonsColors } = useDynamicColors();
@@ -31,7 +17,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
   
   return (
     <View style={[styles.container, { backgroundColor: backgroundCardsColor }]}>
-      {/* <Image source={require('@/assets/logo.png')} style={styles.logo} /> */}
+      <Image source={require('../../assets/images/—Pngtree—human profile avatar 3d icon_8544154.png')} style={styles.logo} />
 
       <Text style={[styles.title, { color: textsColor }]}>Bem-vindo!</Text>
       <Text style={[styles.subtitle, { color: textsColor }]}>Faça login para continuar</Text>

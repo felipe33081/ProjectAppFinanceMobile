@@ -1,7 +1,7 @@
 import { getFirestore, collection, getDocs, addDoc, query } from '@react-native-firebase/firestore';
-import { firebaseInitialize } from '@/firebaseconfig';
+import { FIREBASE_APP } from '@/firebaseconfig';
 
-const db = getFirestore(firebaseInitialize);
+const db = getFirestore(FIREBASE_APP);
 
 const transactionsCollection = collection(db, 'transactions');
 
