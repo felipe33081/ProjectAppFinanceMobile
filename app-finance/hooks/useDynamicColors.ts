@@ -24,7 +24,7 @@ export function useDynamicColors() {
         textTitleCards = '#adb5bd';
 
     } else if (colorScheme === 'light') {
-        generalBackgroundColor = '#ecf3fb';
+        generalBackgroundColor = '#f2f2f2';
         backgroundCardsColor = 'rgba(255, 255, 255, 0.8)';
         textsColor = '#4a4564';
         barNotificationColor = '#dad7cd';

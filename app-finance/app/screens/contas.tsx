@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, TextInput, StatusBar, ScrollView, RefreshControl } from 'react-native';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker'; // Certifique-se de importar do pacote correto
 import { useDynamicColors } from '@/hooks/useDynamicColors';
 
 interface Transaction {

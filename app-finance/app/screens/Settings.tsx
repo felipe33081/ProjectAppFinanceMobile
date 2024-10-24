@@ -13,7 +13,7 @@ import { Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SettingsScreen() {
-    const { textsColor, barNotificationColor, textTitleCards, backgroundCardsColor } = useDynamicColors();
+    const { textsColor, barNotificationColor, textTitleCards, backgroundCardsColor, buttonsColors } = useDynamicColors();
     const [darkMode, setDarkMode] = useState(false)
     const [selectedTheme, setSelectedTheme] = useState('light');
 
@@ -24,36 +24,42 @@ export default function SettingsScreen() {
 
     useEffect(() => {
         const loadTheme = async () => {
-          try {
-            const storedTheme = await AsyncStorage.getItem('theme');
-            if (storedTheme !== null) {
-              setDarkMode(storedTheme === 'dark');
-              setSelectedTheme(storedTheme)
+            try {
+                const storedTheme = await AsyncStorage.getItem('theme');
+                if (storedTheme !== null) {
+                    setDarkMode(storedTheme === 'dark');
+                    setSelectedTheme(storedTheme)
+                }
+            } catch (error) {
+                console.log('Erro ao carregar tema:', error);
             }
-          } catch (error) {
-            console.log('Erro ao carregar tema:', error);
-          }
         };
-    
-        loadTheme();
-      }, []);
 
-      const handleThemeChange = async (themeName: string) => {
+        loadTheme();
+    }, []);
+
+    const handleThemeChange = async (themeName: string) => {
         const normalizedThemeName = themeName.toLowerCase();
-      
+
         // Atualiza o estado imediatamente para evitar atrasos visuais
         setSelectedTheme(normalizedThemeName);
-      
+
         if (normalizedThemeName === 'dark') {
-          setDarkMode(true);
-          await AsyncStorage.setItem('theme', 'dark'); // Armazena o tema no AsyncStorage
-          EventRegister.emit('ChangeTheme', true); // Emite o evento de alteração do tema
+            setDarkMode(true);
+            await AsyncStorage.setItem('theme', 'dark'); // Armazena o tema no AsyncStorage
+            EventRegister.emit('ChangeTheme', true); // Emite o evento de alteração do tema
         } else if (normalizedThemeName === 'light') {
-          setDarkMode(false);
-          await AsyncStorage.setItem('theme', 'light'); // Armazena o tema no AsyncStorage
-          EventRegister.emit('ChangeTheme', false); // Emite o evento de alteração do tema
+            setDarkMode(false);
+            await AsyncStorage.setItem('theme', 'light'); // Armazena o tema no AsyncStorage
+            EventRegister.emit('ChangeTheme', false); // Emite o evento de alteração do tema
         }
-      };
+    };
+
+    //Remove email e password do AsyncStorage para servir como logout
+    const handleLogout = async () => {
+        await AsyncStorage.removeItem('email');
+        EventRegister.emit('Authenticating', false);
+    };
 
     return (
         <View style={[styles.container, { paddingTop: StatusBar.currentHeight || 0 }]}>
@@ -105,6 +111,22 @@ export default function SettingsScreen() {
                     </View>
                 ))}
             </View>
+
+            <View >
+                <Text style={[styles.titleCardText, { color: textTitleCards }]}>
+                    Sair da conta
+                </Text>
+                <View style={[styles.cardLogout, { backgroundColor: backgroundCardsColor }]}>
+                    <TouchableOpacity
+                        style={[styles.button, { backgroundColor: buttonsColors }]}
+                        onPress={() => handleLogout()}>
+                        <Text style={[{color: '#fff'}]}>
+                            Sair da conta
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+
         </View>
     )
 }
@@ -112,6 +134,14 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
     container: {
 
+    },
+    button: {
+        borderRadius: 20,
+        margin: 20,
+        width: 300,
+        height: 45,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     barTop: {
         marginBottom: 20,
@@ -125,10 +155,19 @@ const styles = StyleSheet.create({
     },
     cardTheme: {
         marginTop: 10,
+        marginBottom: 20,
         marginHorizontal: 10,
         padding: 10,
         borderRadius: 10,
         justifyContent: 'flex-start'
+    },
+    cardLogout: {
+        marginTop: 10,
+        marginHorizontal: 10,
+        padding: 10,
+        borderRadius: 10,
+        justifyContent: 'flex-start',
+        alignItems: 'center'
     },
     title: {
         fontFamily: 'Kanit',
